@@ -1,6 +1,7 @@
 import './Home.css';
 import AddWordForm from '../components/AddWordForm';
 import AddSynonymForm from '../components/AddSynonymForm';
+import SearchSynonyms from '../components/SearchSynonyms'; // Import the new component
 import { useState } from 'react';
 
 function Home() {
@@ -15,6 +16,7 @@ function Home() {
       <h1>code_challenge</h1>
       <AddWordForm onWordAdded={handleWordAdded} />
       {wordId && <AddSynonymForm wordId={wordId} />}
+      <SearchSynonyms /> {/* Add the new component here */}
     </div>
   );
 }
