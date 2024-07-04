@@ -63,3 +63,21 @@ export const getSynonyms = async (req, res) => {
     return res.status(500).json({ error: 'Failed to fetch synonyms.' });
   }
 };
+
+export const getWordsBySynonym = async (req, res) => {
+  const { synonym } = req.params;
+
+  try {
+    const synonymDoc = await Word.findOne({ word: synonym });
+    if (!synonymDoc) {
+      return res.status(404).json({ error: 'Synonym not found.' });
+    }
+
+    const words = await Word.find({ synonyms: synonymDoc._id });
+    const wordList = words.map(word => word.word);
+    return res.status(200).json(wordList);
+  } catch (error) {
+    console.error('Failed to fetch words by synonym:', error);
+    return res.status(500).json({ error: 'Failed to fetch words by synonym.' });
+  }
+};
