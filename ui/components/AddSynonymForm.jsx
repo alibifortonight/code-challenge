@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -8,25 +8,25 @@ import { Input } from '@/components/ui/input';
 import axios from 'axios';
 
 const formSchema = z.object({
-  word: z.string().min(1, { message: 'Word is required.' }),
+  synonym: z.string().min(1, { message: 'Synonym is required.' }),
 });
 
-function AddWordForm({ onWordAdded }) {
+function AddSynonymForm({ wordId }) {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      word: '',
+      synonym: '',
     },
   });
 
   const onSubmit = async (values) => {
     try {
-      const response = await axios.post('/api/word', values);
+      await axios.post(`/api/synonym/${wordId}`, values);
       form.reset();
-      onWordAdded(response.data);
+      alert('Synonym added successfully!');
     } catch (error) {
-      console.error('Failed to add word:', error);
-      alert('Failed to add word. Please try again.');
+      console.error('Failed to add synonym:', error);
+      alert('Failed to add synonym. Please try again.');
     }
   };
 
@@ -35,21 +35,21 @@ function AddWordForm({ onWordAdded }) {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
-          name="word"
+          name="synonym"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Word</FormLabel>
+              <FormLabel>Synonym</FormLabel>
               <FormControl>
-                <Input placeholder="Enter a new word" {...field} />
+                <Input placeholder="Enter a synonym" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit">Add Word</Button>
+        <Button type="submit">Add Synonym</Button>
       </form>
     </Form>
   );
 }
 
-export default AddWordForm;
+export default AddSynonymForm;

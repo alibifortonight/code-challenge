@@ -19,11 +19,17 @@ app.use(cors());
 
 app.use(apiRoutes);
 
+// Serve static files from the 'dist' directory at the root of the project
 app.use(express.static(path.join(import.meta.dirname, "..", "dist")));
 
 // Assume all other routes are frontend and serve pre-built frontend from ../dist/ folder
 app.get(/.*/, async (req, res) => {
-    res.sendFile(path.join(import.meta.dirname, "..", "dist", "index.html"));
+    try {
+        res.sendFile(path.join(import.meta.dirname, "..", "dist", "index.html"));
+    } catch (error) {
+        console.error('Error serving index.html:', error);
+        res.status(500).send('Internal Server Error');
+    }
 });
 
 export default app;

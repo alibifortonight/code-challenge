@@ -10,6 +10,9 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./ui"),
     },
   },
+  build: {
+    outDir: 'dist', // Ensure the build output goes to the 'dist' directory
+  },
   server: {
     proxy: {
       '/api': {

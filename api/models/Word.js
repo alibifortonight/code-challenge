@@ -6,6 +6,10 @@ const wordSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
+  synonyms: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Word',
+  }],
 });
 
 const Word = mongoose.model('Word', wordSchema);
